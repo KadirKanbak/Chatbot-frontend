@@ -1,34 +1,18 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  ScrollView,
-} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/navigation";
 import { validateEmail } from "@/utils/validation";
-import { metrics, normalize } from "@/utils/metrics";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useTheme } from "@/styles/ThemeContext";
-
-// Taslaktaki LOGINLight görselini fonksiyonel hale getirilmiş LoginLight bileşeni.
-// (Icon1.svg bulunmadığı için checkbox işaretini MaterialIcons check ile gösteriyoruz.)
-
-// Lokal palette yerine theme.colors.brand kullanılacak
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "Login">;
 
 const LoginLight: React.FC = () => {
   const navigation = useNavigation<Nav>();
-  const { theme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +22,6 @@ const LoginLight: React.FC = () => {
       if (!email) throw new Error("Email gerekli");
       if (!validateEmail(email)) throw new Error("Geçersiz email");
       if (!password) throw new Error("Şifre gerekli");
-      if (!accepted) throw new Error("Şartları kabul edin");
       setLoading(true);
       await new Promise((r) => setTimeout(r, 900));
       navigation.navigate("Home");
@@ -49,262 +32,206 @@ const LoginLight: React.FC = () => {
     }
   };
 
-  const disabled = loading || !email || !password || !accepted;
+  const disabled = loading || !email || !password;
 
   return (
-    <SafeAreaView
-      style={[styles.root, { backgroundColor: theme.colors.brand.bg }]}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.headerWrap}>
+    <SafeAreaView style={styles.logInLight}>
+      <View style={styles.view}>
+        <View style={styles.asistannzaMerhabaDeyinParent}>
           <Text
-            style={[styles.title, { color: theme.colors.brand.darkBase }]}
+            style={styles.asistannzaMerhabaDeyin}
           >{`Asistanınıza\n“Merhaba” deyin!`}</Text>
-        </View>
-        <View
-          style={[
-            styles.card,
-            styles.elevated,
-            {
-              backgroundColor: theme.colors.brand.bg,
-              borderColor: theme.colors.brand.paleBorder,
-            },
-          ]}
-        >
-          <View style={styles.tabRow}>
-            <View
-              style={[
-                styles.tab,
-                {
-                  backgroundColor: theme.colors.brand.mid,
-                  borderColor: theme.colors.brand.border,
-                },
-              ]}
-            >
-              <Text style={[styles.tabTextActive, { color: "#fff" }]}>
-                Giriş Yap
-              </Text>
-            </View>
-            <View style={styles.tabDivider} />
-            <Pressable
-              style={[
-                styles.tab,
-                {
-                  backgroundColor: theme.colors.brand.bg,
-                  borderColor: theme.colors.brand.border,
-                },
-              ]}
-              onPress={() => navigation.replace("SignUp")}
-            >
-              <Text
-                style={[
-                  styles.tabTextInactive,
-                  { color: theme.colors.brand.darkBase },
-                ]}
+          <View style={[styles.formRegister, styles.inputBorder]}>
+            <View style={[styles.buttonGroup, styles.buttonGroupFlexBox]}>
+              <View style={[styles.buttonLight, styles.buttonFlexBox]}>
+                <Text style={[styles.button, styles.buttonTypo]}>
+                  Giriş Yap
+                </Text>
+              </View>
+              <View style={styles.buttonGroupLayout} />
+              <Pressable
+                style={[styles.logInLightButtonLight, styles.buttonFlexBox]}
+                onPress={() => navigation.replace("SignUp")}
               >
-                Kayıt Ol
-              </Text>
-            </Pressable>
-          </View>
-
-          {/* Email */}
-          <View style={styles.field}>
-            <Text
-              style={[styles.label, { color: theme.colors.brand.darkBase }]}
-            >
-              Email
-            </Text>
-            <View style={[styles.inputBox]}>
-              <TextInput
-                value={email}
-                onChangeText={setEmail}
-                placeholder="ornek@eposta.com"
-                placeholderTextColor={theme.colors.brand.paleBorder}
-                style={[styles.input, { color: theme.colors.brand.darkBase }]}
-                autoCapitalize="none"
-                keyboardType="email-address"
-              />
+                <Text style={[styles.logInLightButton, styles.buttonTypo]}>
+                  Kayıt Ol
+                </Text>
+              </Pressable>
             </View>
-          </View>
-
-          {/* Password */}
-          <View style={styles.field}>
-            <Text
-              style={[styles.label, { color: theme.colors.brand.darkBase }]}
-            >
-              Password
-            </Text>
-            <View style={styles.inputBox}>
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Şifre"
-                placeholderTextColor={theme.colors.brand.paleBorder}
-                style={[styles.input, { color: theme.colors.brand.darkBase }]}
-                secureTextEntry
-              />
-            </View>
-          </View>
-
-          {/* Terms */}
-          <Pressable
-            style={styles.termsRow}
-            onPress={() => setAccepted((a) => !a)}
-          >
-            <View
-              style={[
-                styles.checkbox,
-                {
-                  borderColor: theme.colors.brand.mid,
-                  backgroundColor: "#fff",
-                },
-                accepted && { backgroundColor: theme.colors.brand.mid },
-              ]}
-            >
-              {accepted && (
-                <MaterialIcons name="check" color="#fff" size={normalize(18)} />
+            <View style={styles.inputField}>
+              <Text style={styles.email}>Email</Text>
+              <View style={[styles.input, styles.inputFlexBox]}>
+                <TextInput
+                  value={email}
+                  onChangeText={setEmail}
+                  placeholder="ornek@eposta.com"
+                  placeholderTextColor="#adc6ff"
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+              </View>
+              {error && error.toLowerCase().includes("email") && (
+                <Text style={styles.inlineError}>{error}</Text>
               )}
             </View>
-            <Text
-              style={[styles.termsText, { color: theme.colors.brand.darkBase }]}
-            >
-              Şartlar ve Koşulları kabul ediyorum
-            </Text>
-          </Pressable>
-
-          {error ? (
-            <View style={styles.errorBox}>
-              <MaterialIcons
-                name="error"
-                size={normalize(18)}
-                color={theme.colors.brand.errorText}
-              />
-              <Text
-                style={[
-                  styles.errorText,
-                  { color: theme.colors.brand.errorText },
-                ]}
-              >
-                {error}
-              </Text>
+            <View style={styles.inputField}>
+              <Text style={styles.email}>Password</Text>
+              <View style={[styles.input, styles.inputFlexBox]}>
+                <TextInput
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Şifre"
+                  placeholderTextColor="#adc6ff"
+                  style={styles.textInput}
+                  secureTextEntry
+                />
+              </View>
+              {error && error.toLowerCase().includes("şifre") && (
+                <Text style={styles.inlineError}>{error}</Text>
+              )}
             </View>
-          ) : null}
-
-          <Pressable
-            style={[
-              styles.primaryBtn,
-              { backgroundColor: theme.colors.brand.mid },
-              disabled && styles.primaryBtnDisabled,
-            ]}
-            disabled={disabled}
-            onPress={submit}
-          >
-            <Text style={[styles.primaryBtnText, { color: "#fff" }]}>
-              {loading ? "Giriş Yapılıyor..." : "Giriş Yap"}
-            </Text>
-          </Pressable>
+            {error &&
+            !error.toLowerCase().includes("şifre") &&
+            !error.toLowerCase().includes("email") ? (
+              <View style={styles.errorBox}>
+                <MaterialIcons name="error" size={22} color="#d32f2f" />
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            ) : null}
+            {/* Alt aksiyon buton grubu (tasarımda logInLightButtonGroup) */}
+            <View
+              style={[styles.logInLightButtonGroup, styles.buttonGroupFlexBox]}
+            >
+              {/* Tasarımda gizli/placeholder elemanlar */}
+              <View style={[styles.buttonLight2, styles.hiddenPlaceholder]} />
+              <View
+                style={[styles.buttonGroupItem, styles.hiddenPlaceholder]}
+              />
+              <Pressable
+                style={[
+                  styles.buttonLight,
+                  styles.buttonFlexBox,
+                  disabled && styles.disabledBtn,
+                ]}
+                disabled={disabled}
+                onPress={submit}
+              >
+                <Text style={[styles.button, styles.buttonTypo]}>
+                  {loading ? "Giriş Yapılıyor..." : "Giriş Yap"}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
-  scroll: {
-    padding: metrics.padding.large,
-    flexGrow: 1,
-    justifyContent: "center",
+  logInLight: { flex: 1, backgroundColor: "#f0f5ff" },
+  view: { width: "100%", height: 1912, flex: 1 },
+  asistannzaMerhabaDeyinParent: {
+    marginTop: -421,
+    left: 129,
+    height: 842,
+    width: 622,
+    top: "50%",
+    position: "absolute",
   },
-  headerWrap: { marginBottom: metrics.padding.large },
-  title: {
-    fontSize: normalize(40),
-    fontWeight: "600",
+  asistannzaMerhabaDeyin: {
+    fontSize: 72,
+    width: 621,
     textAlign: "center",
+    fontWeight: "600",
+    color: "#030852",
   },
-  card: {
+  formRegister: {
+    marginTop: -187.2,
+    shadowColor: "rgba(0,0,0,0.4)",
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 22.4,
+    shadowOpacity: 1,
+    elevation: 22.4,
+    borderColor: "#adc6ff",
+    padding: 48,
+    gap: 32,
+    minWidth: 622,
+    backgroundColor: "#f0f5ff",
     borderRadius: 15,
-    borderWidth: 2,
-    padding: metrics.padding.large,
-    gap: normalize(24),
+    width: 622,
+    top: "50%",
+    position: "absolute",
   },
-  elevated: {
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
-  },
-  tabRow: { flexDirection: "row", alignItems: "center", gap: 20 },
-  tab: {
-    flex: 1,
-    paddingVertical: metrics.padding.medium,
-    borderRadius: 20,
+  inputBorder: { borderWidth: 1.9, borderRadius: 15 },
+  buttonGroup: { alignItems: "center", alignSelf: "stretch" },
+  buttonGroupFlexBox: { gap: 20, flexDirection: "row" },
+  buttonFlexBox: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    justifyContent: "center",
     borderWidth: 1,
-    alignItems: "center",
-  },
-  tabTextInactive: {
-    fontSize: normalize(20),
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  tabTextActive: {
-    fontSize: normalize(20),
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  tabDivider: {
-    width: 4,
-    alignSelf: "stretch",
-    borderRadius: 2,
-    backgroundColor: "#030852",
-  },
-  field: { gap: normalize(8) },
-  label: {
-    fontSize: normalize(16),
-    fontWeight: "500",
-  },
-  inputBox: {
-    backgroundColor: "#fff",
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingHorizontal: metrics.padding.medium,
-    paddingVertical: metrics.padding.small,
-  },
-  input: {
-    fontSize: normalize(16),
-    paddingVertical: 4,
-  },
-  termsRow: { flexDirection: "row", alignItems: "center", gap: 12 },
-  checkbox: {
-    width: normalize(28),
-    height: normalize(28),
-    borderRadius: 6,
-    borderWidth: 2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkboxChecked: {},
-  termsText: { flex: 1, fontSize: normalize(14) },
-  primaryBtn: {
-    paddingVertical: metrics.padding.medium,
+    borderColor: "#2f54eb",
     borderRadius: 20,
     alignItems: "center",
+    flexDirection: "row",
+    flex: 1,
   },
-  primaryBtnDisabled: { opacity: 0.5 },
-  primaryBtnText: { fontWeight: "600", fontSize: normalize(18) },
+  buttonGroupLayout: {
+    height: 72,
+    borderRightWidth: 4,
+    borderColor: "#061178",
+    width: 4,
+  },
+  buttonLight: { backgroundColor: "#10239e" },
+  button: { color: "#fff" },
+  buttonTypo: { fontSize: 32, textAlign: "center", fontWeight: "600" },
+  logInLightButtonLight: { backgroundColor: "#f0f5ff" },
+  logInLightButton: { color: "#030852", fontSize: 32 },
+  inputField: { gap: 15, alignSelf: "stretch" },
+  email: { lineHeight: 43, textAlign: "left", fontSize: 31, color: "#030852" },
+  input: {
+    backgroundColor: "#fff",
+    borderColor: "#d6e4ff",
+    paddingHorizontal: 31,
+    paddingVertical: 23,
+    minWidth: 466.5,
+    flexDirection: "row",
+    borderWidth: 1.9,
+    borderRadius: 15,
+    alignItems: "center",
+  },
+  textInput: { flex: 1, fontSize: 31, color: "#030852", padding: 0 },
+  inputFlexBox: { alignItems: "center", alignSelf: "stretch" },
+  inlineError: { marginTop: 8, color: "#d32f2f", fontSize: 16 },
   errorBox: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(255,59,48,0.08)",
-    padding: metrics.padding.medium,
+    gap: 12,
+    backgroundColor: "#ffecec",
+    padding: 16,
     borderRadius: 12,
   },
-  errorText: { fontSize: normalize(14), fontWeight: "500" },
+  errorText: { color: "#d32f2f", fontSize: 18, flex: 1 },
+  disabledBtn: { opacity: 0.5 },
+  // Yeni eklenen alt grup ve placeholder stilleri
+  logInLightButtonGroup: { height: 71, width: 526, alignSelf: "center" },
+  buttonLight2: {
+    width: 245,
+    height: 73,
+    borderWidth: 1,
+    borderColor: "#2f54eb",
+    borderRadius: 20,
+    backgroundColor: "#f0f5ff",
+  },
+  buttonGroupItem: {
+    width: 4,
+    height: 72,
+    borderRightWidth: 4,
+    borderColor: "#061178",
+  },
+  hiddenPlaceholder: { display: "none" },
 });
 
 export default LoginLight;

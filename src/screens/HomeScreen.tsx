@@ -100,10 +100,14 @@ const HomeScreen: React.FC = () => {
                 value={search}
                 onChangeText={setSearch}
                 placeholder="Sohbetlerde ara..."
-                placeholderTextColor={theme.colors.text.secondary}
+                placeholderTextColor={theme.colors.text.secondary + "AA"}
                 style={[
                   styles.searchInput,
-                  { color: theme.colors.text.primary },
+                  {
+                    color: theme.colors.text.primary,
+                    fontWeight: "500",
+                    letterSpacing: 0.3,
+                  },
                 ]}
                 autoCorrect={false}
                 returnKeyType="search"
@@ -225,7 +229,7 @@ const styles = StyleSheet.create({
     // icon ile input arası boşluk
     columnGap: metrics.padding.small,
   },
-  searchInput: { flex: 1, fontSize: normalize(14) },
+  searchInput: { flex: 1, fontSize: normalize(16) },
   emptyWrap: {
     alignItems: "center",
     paddingVertical: metrics.padding.large * 1.5,

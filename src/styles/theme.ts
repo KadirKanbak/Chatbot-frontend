@@ -54,36 +54,50 @@ export interface Theme {
   };
 }
 
+// Merkezî renk paleti (kullanıcının sağladığı geek blue skalası)
+export const brandPalette = {
+  PALE_BORDER: "#ADC6FF",
+  INPUT_BORDER: "#D6E4FF",
+  BG_LIGHT: "#F0F5FF",
+  ACCENT_LIGHT: "#85A5FF",
+  BORDER: "#2F54EB",
+  MID_2: "#1D39C4",
+  MID: "#10239E",
+  DEEP: "#061178",
+  DARK_BASE: "#030852",
+};
+
 export const themes: Record<ThemeType, Theme> = {
   light: {
     colors: {
-      primary: "#2B547E",
-      secondary: "#4682B4",
-      accent: "#5F9EA0",
-      background: "#F0F8FF",
+      // Light temada palete daha sıkı bağlanıyoruz
+      primary: brandPalette.MID, // #10239E
+      secondary: brandPalette.BORDER, // #2F54EB
+      accent: brandPalette.ACCENT_LIGHT, // #85A5FF (ikincil vurgu)
+      background: brandPalette.BG_LIGHT, // #F0F5FF
       surface: "#FFFFFF",
       text: {
-        primary: "#1C1C1E",
-        secondary: "#666666",
+        primary: brandPalette.DARK_BASE, // koyu lacivert taban metin
+        secondary: brandPalette.MID_2, // orta ton açıklama
         inverse: "#FFFFFF",
       },
       bubble: {
-        user: "#2B547E",
-        bot: "#F0F8FF",
+        user: brandPalette.MID, // kullanıcı balonu
+        bot: brandPalette.BG_LIGHT,
         userText: "#FFFFFF",
-        botText: "#1C1C1E",
+        botText: brandPalette.DARK_BASE,
       },
-      border: "#E5E5EA",
+      border: brandPalette.INPUT_BORDER,
       success: "#34C759",
       error: "#FF3B30",
       brand: {
-        darkBase: "#030852",
-        mid: "#10239e",
-        border: "#2f54eb",
-        paleBorder: "#adc6ff",
-        bg: "#f0f5ff",
-        inputBorder: "#d6e4ff",
-        accent: "#10239e",
+        darkBase: brandPalette.DARK_BASE,
+        mid: brandPalette.MID,
+        border: brandPalette.BORDER,
+        paleBorder: brandPalette.PALE_BORDER,
+        bg: brandPalette.BG_LIGHT,
+        inputBorder: brandPalette.INPUT_BORDER,
+        accent: brandPalette.MID,
         errorText: "#ff3b30",
       },
     },
@@ -119,33 +133,33 @@ export const themes: Record<ThemeType, Theme> = {
   },
   dark: {
     colors: {
-      primary: "#85A5FF",
-      secondary: "#2F54EB",
-      accent: "#ADC6FF",
-      background: "#1F2140",
-      surface: "#2C2E47",
+      primary: brandPalette.ACCENT_LIGHT, // açık mavi vurgu
+      secondary: brandPalette.BORDER,
+      accent: brandPalette.PALE_BORDER,
+      background: brandPalette.DARK_BASE, // daha koyu arka plan
+      surface: brandPalette.MID, // kart yüzeyi
       text: {
         primary: "#FFFFFF",
-        secondary: "#ADC6FF",
-        inverse: "#1F2140",
+        secondary: brandPalette.PALE_BORDER,
+        inverse: brandPalette.DARK_BASE,
       },
       bubble: {
-        user: "#85A5FF",
-        bot: "#2C2E47",
-        userText: "#1F2140",
+        user: brandPalette.ACCENT_LIGHT,
+        bot: brandPalette.MID,
+        userText: brandPalette.DARK_BASE,
         botText: "#FFFFFF",
       },
-      border: "#3A3D66",
+      border: brandPalette.BORDER,
       success: "#73D13D",
       error: "#FF7875",
       brand: {
-        darkBase: "#030852",
-        mid: "#10239e",
-        border: "#2f54eb",
-        paleBorder: "#adc6ff",
-        bg: "#030852", // Dark auth kart arka planında kullanılıyor
-        inputBorder: "#d6e4ff",
-        accent: "#85a5ff",
+        darkBase: brandPalette.DARK_BASE,
+        mid: brandPalette.MID,
+        border: brandPalette.BORDER,
+        paleBorder: brandPalette.PALE_BORDER,
+        bg: brandPalette.DARK_BASE,
+        inputBorder: brandPalette.INPUT_BORDER,
+        accent: brandPalette.ACCENT_LIGHT,
         errorText: "#ff7875",
       },
     },

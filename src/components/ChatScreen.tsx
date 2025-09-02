@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function ChatScreen({ onClose, title }: Props) {
-  const { theme, themeType } = useTheme();
+  const { theme, themeType, toggleTheme } = useTheme();
   const insets = useSafeAreaInsets();
   useEffect(() => {
     const showEvent =
@@ -109,13 +109,55 @@ export default function ChatScreen({ onClose, title }: Props) {
             {title || "FinPal"}
           </Text>
           {onClose && (
-            <Pressable onPress={onClose} style={s.closeBtn} hitSlop={8}>
-              <MaterialIcons
-                name="close"
-                size={normalize(24)}
-                color={theme.colors.text.secondary}
-              />
-            </Pressable>
+            <View style={s.actionsRow}>
+              <Pressable
+                onPress={toggleTheme}
+                style={[
+                  s.iconBtn,
+                  {
+                    borderWidth: 1,
+                    borderColor: theme.colors.border,
+                    backgroundColor:
+                      themeType === "dark"
+                        ? "rgba(255,255,255,0.08)"
+                        : "rgba(0,0,0,0.05)",
+                  },
+                ]}
+                hitSlop={8}
+                accessibilityLabel={
+                  themeType === "dark" ? "Light moda geç" : "Dark moda geç"
+                }
+              >
+                <MaterialIcons
+                  name={themeType === "dark" ? "light-mode" : "dark-mode"}
+                  size={normalize(22)}
+                  color={theme.colors.text.primary}
+                />
+              </Pressable>
+              <Pressable
+                onPress={onClose}
+                style={[
+                  s.iconBtn,
+                  s.closeBtn,
+                  {
+                    borderWidth: 1,
+                    borderColor: theme.colors.border,
+                    backgroundColor:
+                      themeType === "dark"
+                        ? "rgba(255,255,255,0.08)"
+                        : "rgba(0,0,0,0.05)",
+                  },
+                ]}
+                hitSlop={8}
+                accessibilityLabel="Sohbeti kapat"
+              >
+                <MaterialIcons
+                  name="close"
+                  size={normalize(22)}
+                  color={theme.colors.text.secondary}
+                />
+              </Pressable>
+            </View>
           )}
         </View>
         <KeyboardAvoidingView
@@ -245,9 +287,20 @@ const s = StyleSheet.create({
     marginLeft: metrics.padding.small,
     flex: 1,
   },
+  actionsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: metrics.padding.small / 2,
+  },
+  iconBtn: {
+    width: normalize(40),
+    height: normalize(40),
+    borderRadius: normalize(20),
+    alignItems: "center",
+    justifyContent: "center",
+  },
   closeBtn: {
-    padding: metrics.padding.small,
-    marginLeft: metrics.padding.small,
+    marginLeft: metrics.padding.small / 2,
   },
   listContent: { padding: metrics.padding.medium, gap: metrics.padding.small },
   bubble: {

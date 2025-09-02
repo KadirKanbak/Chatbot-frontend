@@ -1,5 +1,8 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "./src/types/navigation";
 import HomeScreen from "./src/screens/HomeScreen";
@@ -17,12 +20,25 @@ import ThemeFloatingToggle from "./src/components/ThemeFloatingToggle";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const navRef = useNavigationContainerRef();
+  const [currentRoute, setCurrentRoute] = React.useState<string | undefined>();
+
+  const onReady = () => {
+    setCurrentRoute(navRef.getCurrentRoute()?.name);
+  };
+  const onStateChange = () => {
+    setCurrentRoute(navRef.getCurrentRoute()?.name);
+  };
   return (
     <ThemeProvider>
       <SafeAreaProvider>
-        <NavigationContainer>
+        <NavigationContainer
+          ref={navRef}
+          onReady={onReady}
+          onStateChange={onStateChange}
+        >
           <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-          <ThemeFloatingToggle />
+          <ThemeFloatingToggle currentRoute={currentRoute} />
           <Stack.Navigator
             initialRouteName="Welcome"
             screenOptions={{ headerShown: false }}

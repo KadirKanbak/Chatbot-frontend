@@ -1,28 +1,28 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  ScrollView,
-} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/navigation";
 import { validateEmail, validatePassword } from "@/utils/validation";
-import { metrics, normalize } from "@/utils/metrics";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useTheme } from "@/styles/ThemeContext";
 
-// Dark Register bileşeni – renkler artık theme.colors.brand üzerinden geliyor
+// Dark register statik tasarım (kullanıcı snippet'i) + işlevsel form mantığı
+// Icon1.svg dosyası mevcut olmadığı için checkbox içine MaterialIcons check yerleştiriliyor.
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
+const palette = {
+  bg: "#030852",
+  accent: "#85a5ff",
+  border: "#2f54eb",
+  paleBorder: "#adc6ff",
+  inputBorder: "#d6e4ff",
+  lightBg: "#f0f5ff",
+};
+
 const RegisterDark: React.FC = () => {
   const navigation = useNavigation<Nav>();
-  const { theme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -36,12 +36,12 @@ const RegisterDark: React.FC = () => {
       if (!email) throw new Error("Email gerekli");
       if (!validateEmail(email)) throw new Error("Geçersiz email");
       if (!password) throw new Error("Şifre gerekli");
-      const passVal = validatePassword(password);
-      if (!passVal.isValid) throw new Error(passVal.message || "Zayıf şifre");
+      const v = validatePassword(password);
+      if (!v.isValid) throw new Error(v.message || "Zayıf şifre");
       if (password !== confirm) throw new Error("Şifreler uyuşmuyor");
       if (!accepted) throw new Error("Şartları kabul edin");
       setLoading(true);
-      await new Promise((r) => setTimeout(r, 1000));
+      await new Promise((r) => setTimeout(r, 900));
       navigation.navigate("Home");
     } catch (e) {
       if (e instanceof Error) setError(e.message);
@@ -53,123 +53,74 @@ const RegisterDark: React.FC = () => {
   const disabled = loading || !email || !password || !confirm || !accepted;
 
   return (
-    <SafeAreaView
-      style={[styles.root, { backgroundColor: theme.colors.brand.bg }]}
-    >
-      {/* Global Theme Toggle App seviyesinde gösteriliyor */}
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.container}>
+    <SafeAreaView style={styles.logInDark}>
+      <View style={styles.view}>
+        <View style={styles.asistannzaMerhabaDeyinParent}>
           <Text
-            style={[styles.title, { color: theme.colors.text.primary }]}
+            style={styles.asistannzaMerhabaDeyin}
           >{`Asistanınıza\n“Merhaba” deyin!`}</Text>
-          <View
-            style={[
-              styles.card,
-              {
-                backgroundColor: theme.colors.brand.bg,
-                borderColor: theme.colors.brand.paleBorder,
-              },
-            ]}
-          >
-            <View style={styles.tabRow}>
-              {/* Giriş Yap sekmesi (pasif) */}
+          <View style={styles.formRegister}>
+            {/* Üst buton grubu */}
+            <View style={[styles.buttonGroup, styles.buttonGroupFlexBox]}>
               <Pressable
-                style={[
-                  styles.tab,
-                  {
-                    backgroundColor: theme.colors.brand.bg,
-                    borderColor: theme.colors.brand.border,
-                  },
-                ]}
+                style={[styles.buttonDark, styles.buttonSpaceBlock]}
                 onPress={() => navigation.replace("Login")}
               >
-                <Text
-                  style={[
-                    styles.tabTextInactive,
-                    { color: theme.colors.text.primary },
-                  ]}
-                >
+                <Text style={[styles.button, styles.buttonTypo]}>
                   Giriş Yap
                 </Text>
               </Pressable>
-              <View style={styles.tabDivider} />
-              {/* Kayıt Ol sekmesi (aktif) */}
               <View
-                style={[
-                  styles.tab,
-                  {
-                    backgroundColor: theme.colors.brand.accent,
-                    borderColor: theme.colors.brand.border,
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.tabTextActive,
-                    { color: theme.colors.brand.darkBase },
-                  ]}
-                >
+                style={[styles.buttonGroupChild, styles.buttonGroupLayout]}
+              />
+              <View style={[styles.button2, styles.buttonBorder]}>
+                <Text style={[styles.logInDarkButton, styles.buttonTypo]}>
                   Kayıt Ol
                 </Text>
               </View>
             </View>
 
             {/* Email */}
-            <View style={styles.field}>
-              <Text
-                style={[styles.label, { color: theme.colors.text.primary }]}
-              >
-                Email
-              </Text>
-              <View style={styles.inputBox}>
+            <View style={styles.inputField}>
+              <Text style={[styles.email, styles.emailTypo]}>Email</Text>
+              <View style={[styles.input, styles.inputFlexBox]}>
                 <TextInput
                   value={email}
                   onChangeText={setEmail}
                   placeholder="ornek@eposta.com"
-                  placeholderTextColor={theme.colors.brand.paleBorder}
-                  style={[styles.input, { color: theme.colors.brand.darkBase }]}
+                  placeholderTextColor={palette.paleBorder}
+                  style={styles.textInput}
                   autoCapitalize="none"
                   keyboardType="email-address"
                 />
               </View>
             </View>
-
             {/* Password */}
-            <View style={styles.field}>
-              <Text
-                style={[styles.label, { color: theme.colors.text.primary }]}
-              >
-                Password
-              </Text>
-              <View style={styles.inputBox}>
+            <View style={styles.inputField}>
+              <Text style={[styles.email, styles.emailTypo]}>Password</Text>
+              <View style={[styles.input, styles.inputFlexBox]}>
                 <TextInput
                   value={password}
                   onChangeText={setPassword}
                   placeholder="Şifre"
-                  placeholderTextColor={theme.colors.brand.paleBorder}
-                  style={[styles.input, { color: theme.colors.brand.darkBase }]}
+                  placeholderTextColor={palette.paleBorder}
+                  style={styles.textInput}
                   secureTextEntry
                 />
               </View>
             </View>
-
-            {/* Confirm */}
-            <View style={styles.field}>
-              <Text
-                style={[styles.label, { color: theme.colors.text.primary }]}
-              >
+            {/* Confirm Password (tasarımda yoktu; kayıt için eklendi) */}
+            <View style={styles.inputField}>
+              <Text style={[styles.email, styles.emailTypo]}>
                 Confirm Password
               </Text>
-              <View style={styles.inputBox}>
+              <View style={[styles.input, styles.inputFlexBox]}>
                 <TextInput
                   value={confirm}
                   onChangeText={setConfirm}
                   placeholder="Şifre Tekrar"
-                  placeholderTextColor={theme.colors.brand.paleBorder}
-                  style={[styles.input, { color: theme.colors.brand.darkBase }]}
+                  placeholderTextColor={palette.paleBorder}
+                  style={styles.textInput}
                   secureTextEntry
                 />
               </View>
@@ -177,157 +128,188 @@ const RegisterDark: React.FC = () => {
 
             {/* Terms */}
             <Pressable
-              style={styles.termsRow}
+              style={styles.checkboxField}
               onPress={() => setAccepted((a) => !a)}
             >
               <View
-                style={[
-                  styles.checkbox,
-                  { borderColor: theme.colors.brand.accent },
-                  accepted && { backgroundColor: theme.colors.brand.accent },
-                ]}
+                style={[styles.checkboxAndLabel, styles.descriptionRowFlexBox]}
               >
-                {accepted && (
-                  <MaterialIcons
-                    name="check"
-                    color={theme.colors.text.primary}
-                    size={normalize(18)}
-                  />
-                )}
+                <View
+                  style={[styles.checkbox, accepted && styles.checkboxChecked]}
+                >
+                  {accepted && (
+                    <MaterialIcons name="check" size={18} color="#030852" />
+                  )}
+                </View>
+                <Text style={[styles.iAcceptThe, styles.emailTypo]}>
+                  Şartlar ve Koşulları kabul ediyorum
+                </Text>
               </View>
-              <Text
-                style={[styles.termsText, { color: theme.colors.text.primary }]}
-              >
-                Şartlar ve Koşulları kabul ediyorum
-              </Text>
             </Pressable>
 
             {error ? (
               <View style={styles.errorBox}>
-                <MaterialIcons
-                  name="error"
-                  size={normalize(18)}
-                  color={theme.colors.error}
-                />
-                <Text style={[styles.errorText, { color: theme.colors.error }]}>
-                  {error}
-                </Text>
+                <MaterialIcons name="error" size={22} color="#ff6b6b" />
+                <Text style={styles.errorText}>{error}</Text>
               </View>
             ) : null}
 
+            {/* Alt buton (tasarımın ikinci grup benzeri) */}
             <Pressable
-              style={[
-                styles.primaryBtn,
-                { backgroundColor: theme.colors.brand.accent },
-                disabled && styles.primaryBtnDisabled,
-              ]}
+              style={[styles.submitBtn, disabled && styles.disabledBtn]}
               disabled={disabled}
               onPress={submit}
             >
-              <Text
-                style={[
-                  styles.primaryBtnText,
-                  { color: theme.colors.brand.darkBase },
-                ]}
-              >
+              <Text style={[styles.submitText, styles.buttonTypo]}>
                 {loading ? "Kaydediliyor..." : "Kayıt Ol"}
               </Text>
             </Pressable>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
-  scroll: { flexGrow: 1, padding: metrics.padding.large },
-  container: {
-    maxWidth: normalize(620),
-    width: "100%",
-    alignSelf: "center",
-    justifyContent: "center",
-    flex: 1,
+  logInDark: { flex: 1, backgroundColor: palette.bg },
+  // Ana yüksek canvas (tasarım absolute kullanıyor)
+  view: { width: "100%", height: 1912, flex: 1 },
+  asistannzaMerhabaDeyinParent: {
+    marginTop: -475,
+    left: 129,
+    height: 1180, // confirm alanı için biraz daha uzun
+    width: 622,
+    top: "50%",
+    position: "absolute",
   },
-  title: {
-    fontSize: normalize(44),
-    fontWeight: "600",
+  asistannzaMerhabaDeyin: {
+    fontSize: 72,
+    width: 621,
     textAlign: "center",
-    marginBottom: normalize(40),
+    fontFamily: "Inter-SemiBold",
+    fontWeight: "600",
+    color: palette.lightBg,
   },
-  card: {
-    borderWidth: 2,
-    borderRadius: 15,
-    padding: metrics.padding.large,
-    gap: normalize(24),
-    shadowColor: "rgba(255,255,255,0.4)",
-    shadowOpacity: 1,
-    shadowRadius: 22,
+  formRegister: {
+    marginTop: 40,
+    shadowColor: "rgba(255, 255, 255, 0.4)",
     shadowOffset: { width: 0, height: 0 },
-    elevation: 8,
-  },
-  tabRow: { flexDirection: "row", gap: 20, alignItems: "center" },
-  tab: {
-    flex: 1,
-    paddingVertical: metrics.padding.medium,
-    borderRadius: 20,
-    borderWidth: 1,
-    alignItems: "center",
-  },
-  tabTextActive: {
-    fontSize: normalize(20),
-    fontWeight: "600",
-  },
-  tabTextInactive: {
-    fontSize: normalize(20),
-    fontWeight: "600",
-  },
-  tabDivider: {
-    width: 4,
-    backgroundColor: "#d6e4ff",
-    alignSelf: "stretch",
-    borderRadius: 2,
-  },
-  field: { gap: normalize(8) },
-  label: { fontSize: normalize(16), fontWeight: "500" },
-  inputBox: {
-    backgroundColor: "#fff",
-    borderWidth: 2,
+    shadowOpacity: 1,
+    shadowRadius: 22.4,
+    elevation: 22.4,
+    backgroundColor: palette.bg,
+    borderColor: palette.paleBorder,
+    padding: 48,
+    gap: 32,
+    minWidth: 622,
+    borderWidth: 1.9,
     borderRadius: 15,
-    paddingHorizontal: metrics.padding.medium,
-    paddingVertical: metrics.padding.small,
   },
-  input: { fontSize: normalize(16), paddingVertical: 4 },
-  termsRow: { flexDirection: "row", alignItems: "center", gap: 12 },
-  checkbox: {
-    width: normalize(28),
-    height: normalize(28),
-    borderRadius: 6,
-    borderWidth: 2,
-    alignItems: "center",
+  buttonGroupFlexBox: { gap: 20, flexDirection: "row" },
+  buttonSpaceBlock: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    flexDirection: "row",
+    flex: 1,
+  },
+  buttonTypo: {
+    fontSize: 32,
+    textAlign: "center",
+    fontFamily: "Inter-SemiBold",
+    fontWeight: "600",
+  },
+  buttonGroupLayout: {
+    height: 72,
+    borderRightWidth: 4,
+    width: 4,
+    borderStyle: "solid",
+  },
+  buttonBorder: {
+    backgroundColor: palette.lightBg,
     justifyContent: "center",
-  },
-  termsText: { flex: 1, fontSize: normalize(14) },
-  primaryBtn: {
-    paddingVertical: metrics.padding.medium,
+    borderWidth: 1,
+    borderColor: palette.border,
     borderRadius: 20,
     alignItems: "center",
+    borderStyle: "solid",
   },
-  primaryBtnDisabled: { opacity: 0.5 },
-  primaryBtnText: {
-    fontWeight: "600",
-    fontSize: normalize(18),
+  buttonGroup: { alignItems: "center", alignSelf: "stretch" },
+  buttonDark: {
+    justifyContent: "center",
+    backgroundColor: palette.accent,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: palette.border,
+    borderRadius: 20,
   },
+  button: { color: "#fff" },
+  buttonGroupChild: { borderColor: palette.inputBorder },
+  button2: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    flexDirection: "row",
+    flex: 1,
+  },
+  logInDarkButton: { color: palette.bg },
+  inputField: { gap: 15, alignSelf: "stretch" },
+  email: {
+    lineHeight: 43,
+    fontSize: 31,
+    fontFamily: "Inter-Regular",
+    color: palette.lightBg,
+  },
+  emailTypo: { textAlign: "left", fontFamily: "Inter-Regular", fontSize: 31 },
+  inputFlexBox: { alignItems: "center", alignSelf: "stretch" },
+  input: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 31,
+    paddingVertical: 23,
+    minWidth: 466,
+    borderColor: palette.inputBorder,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1.9,
+    borderRadius: 15,
+  },
+  textInput: { flex: 1, fontSize: 31, color: palette.bg, padding: 0 },
+  checkboxField: { alignSelf: "stretch" },
+  checkboxAndLabel: {
+    alignSelf: "stretch",
+    flexDirection: "row",
+    gap: 23,
+    alignItems: "center",
+  },
+  descriptionRowFlexBox: { flexDirection: "row", alignItems: "center" },
+  checkbox: {
+    width: 31,
+    height: 31,
+    borderRadius: 7,
+    backgroundColor: palette.accent,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  checkboxChecked: { backgroundColor: palette.accent },
+  iAcceptThe: { lineHeight: 43, fontSize: 31, color: palette.lightBg, flex: 1 },
   errorBox: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(255,120,117,0.15)",
-    padding: metrics.padding.medium,
+    gap: 12,
+    backgroundColor: "#402020",
+    padding: 16,
     borderRadius: 12,
   },
-  errorText: { fontSize: normalize(14), fontWeight: "500" },
+  errorText: { color: "#ff6b6b", fontSize: 18, flex: 1 },
+  submitBtn: {
+    paddingVertical: 18,
+    backgroundColor: palette.lightBg,
+    borderRadius: 20,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: palette.border,
+  },
+  submitText: { color: palette.bg },
+  disabledBtn: { opacity: 0.5 },
 });
 
 export default RegisterDark;
