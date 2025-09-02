@@ -99,11 +99,11 @@ const LoginLight: React.FC = () => {
                 <Text style={styles.errorText}>{error}</Text>
               </View>
             ) : null}
-            {/* Alt aksiyon buton grubu (tasarımda logInLightButtonGroup) */}
+            {/* Bottom action button group (design: logInLightButtonGroup) */}
             <View
               style={[styles.logInLightButtonGroup, styles.buttonGroupFlexBox]}
             >
-              {/* Tasarımda gizli/placeholder elemanlar */}
+              {/* Hidden / placeholder elements reserved in design */}
               <View style={[styles.buttonLight2, styles.hiddenPlaceholder]} />
               <View
                 style={[styles.buttonGroupItem, styles.hiddenPlaceholder]}
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   errorText: { color: "#d32f2f", fontSize: 18, flex: 1 },
   disabledBtn: { opacity: 0.5 },
-  // Yeni eklenen alt grup ve placeholder stilleri
+  // Newly added bottom group and placeholder styles
   logInLightButtonGroup: { height: 71, width: 526, alignSelf: "center" },
   buttonLight2: {
     width: 245,

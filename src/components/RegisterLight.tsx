@@ -151,7 +151,7 @@ const RegisterLight: React.FC = () => {
 
 const styles = StyleSheet.create({
   registerLight: { flex: 1, backgroundColor: "#f0f5ff" },
-  // Tasarımda absolute positioning kullanılmış; küçük ekran taşmalarını yönetmek için üst seviye view yüksek tutuldu.
+  // Absolute positioning is used in the design; parent view height is large to handle potential overflow on smaller screens.
   view: { width: "100%", height: 1912, flex: 1 },
   asistannzaMerhabaDeyinParent: {
     position: "absolute",
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  // Metin rengi için ayrı buton metni stili
+  // Separate text style only for the button label color
   button: { color: "#030852" },
   button2: {
     flex: 1,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     gap: 23,
     alignItems: "center",
   },
-  // Eski sürümden gelen referansları karşılamak için placeholder stiller
+  // Placeholder styles retained to keep compatibility with references from an older version
   inputFlexBox: { alignItems: "center", alignSelf: "stretch" },
   descriptionRowFlexBox: { flexDirection: "row", alignItems: "center" },
   checkbox: {

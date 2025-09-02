@@ -7,8 +7,8 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/navigation";
 import { validateEmail, validatePassword } from "@/utils/validation";
 
-// Dark register statik tasarım (kullanıcı snippet'i) + işlevsel form mantığı
-// Icon1.svg dosyası mevcut olmadığı için checkbox içine MaterialIcons check yerleştiriliyor.
+// Dark register static design (user snippet) + functional form logic
+// Icon1.svg not present; using MaterialIcons check inside the checkbox.
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
@@ -60,7 +60,7 @@ const RegisterDark: React.FC = () => {
             style={styles.asistannzaMerhabaDeyin}
           >{`Asistanınıza\n“Merhaba” deyin!`}</Text>
           <View style={styles.formRegister}>
-            {/* Üst buton grubu */}
+            {/* Top button group */}
             <View style={[styles.buttonGroup, styles.buttonGroupFlexBox]}>
               <Pressable
                 style={[styles.buttonDark, styles.buttonSpaceBlock]}
@@ -109,7 +109,7 @@ const RegisterDark: React.FC = () => {
                 />
               </View>
             </View>
-            {/* Confirm Password (tasarımda yoktu; kayıt için eklendi) */}
+            {/* Confirm Password (not in original design; added for registration) */}
             <View style={styles.inputField}>
               <Text style={[styles.email, styles.emailTypo]}>
                 Confirm Password
@@ -126,7 +126,7 @@ const RegisterDark: React.FC = () => {
               </View>
             </View>
 
-            {/* Terms */}
+            {/* Terms acceptance */}
             <Pressable
               style={styles.checkboxField}
               onPress={() => setAccepted((a) => !a)}
@@ -154,7 +154,7 @@ const RegisterDark: React.FC = () => {
               </View>
             ) : null}
 
-            {/* Alt buton (tasarımın ikinci grup benzeri) */}
+            {/* Bottom submit button (mirrors second group in design) */}
             <Pressable
               style={[styles.submitBtn, disabled && styles.disabledBtn]}
               disabled={disabled}
@@ -173,12 +173,12 @@ const RegisterDark: React.FC = () => {
 
 const styles = StyleSheet.create({
   logInDark: { flex: 1, backgroundColor: palette.bg },
-  // Ana yüksek canvas (tasarım absolute kullanıyor)
+  // Large canvas height (design uses absolute positioning)
   view: { width: "100%", height: 1912, flex: 1 },
   asistannzaMerhabaDeyinParent: {
     marginTop: -475,
     left: 129,
-    height: 1180, // confirm alanı için biraz daha uzun
+    height: 1180, // a little longer to fit confirm field
     width: 622,
     top: "50%",
     position: "absolute",

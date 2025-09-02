@@ -13,7 +13,7 @@ const LoginDark: React.FC = () => {
   const navigation = useNavigation<Nav>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // Statik tasarımda şart/checkbox alanı yok; login için onay gereksiz.
+  // Static design has no terms/checkbox section; not needed for login.
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +43,7 @@ const LoginDark: React.FC = () => {
             style={styles.asistannzaMerhabaDeyin}
           >{`Asistanınıza\n“Merhaba” deyin!`}</Text>
           <View style={styles.formRegister}>
-            {/* Üst sekme grup (statik tasarım) */}
+            {/* Top tab group (static design) */}
             <View style={[styles.buttonGroup, styles.buttonGroupFlexBox]}>
               <View style={[styles.buttonDark, styles.buttonBorder]}>
                 <Text style={[styles.tabActiveText, styles.buttonTypo]}>
@@ -97,7 +97,7 @@ const LoginDark: React.FC = () => {
                 <Text style={styles.errorText}>{error}</Text>
               </View>
             ) : null}
-            {/* Alt buton grup (tasarım: logInDarkButtonGroup) */}
+            {/* Bottom button group (design: logInDarkButtonGroup) */}
             <View
               style={[styles.logInDarkButtonGroup, styles.buttonGroupFlexBox]}
             >
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   },
   textInput: { flex: 1, fontSize: 31, color: "#030852", padding: 0 },
   inputFlexBox: { alignItems: "center", alignSelf: "stretch" },
-  // Checkbox alanı tasarımda yok: eski stiller kaldırıldı
+  // Checkbox area omitted in design: legacy styles removed
   errorBox: {
     flexDirection: "row",
     alignItems: "center",
