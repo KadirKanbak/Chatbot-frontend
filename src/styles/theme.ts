@@ -133,7 +133,7 @@ export const themes: Record<ThemeType, Theme> = {
   },
   dark: {
     colors: {
-      primary: brandPalette.ACCENT_LIGHT, // açık mavi vurgu
+      primary: brandPalette.BG_LIGHT, // açık mavi vurgu
       secondary: brandPalette.BORDER,
       accent: brandPalette.PALE_BORDER,
       background: brandPalette.DARK_BASE, // daha koyu arka plan

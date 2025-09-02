@@ -6,7 +6,7 @@ import { useTheme } from "@/styles/ThemeContext";
 const ChatBotScreenWrapper: React.FC = () => {
   const { theme, themeType } = useTheme();
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.border }}>
       <StatusBar
         barStyle={themeType === "dark" ? "light-content" : "dark-content"}
       />

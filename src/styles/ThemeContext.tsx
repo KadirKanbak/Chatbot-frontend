@@ -7,12 +7,14 @@ interface ThemeContextType {
   theme: Theme;
   themeType: ThemeType;
   toggleTheme: () => void;
+  getThemeLabel: (themeType?: ThemeType) => string; // <-- ekle
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: themes.light,
   themeType: "light",
   toggleTheme: () => {},
+  getThemeLabel: () => "Açık", // varsayılan
 });
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -51,10 +53,22 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getThemeLabel = (type?: ThemeType) => {
+    switch (type || themeType) {
+      case "light":
+        return "Açık";
+      case "dark":
+        return "Koyu";
+      default:
+        return type || themeType;
+    }
+  };
+
   const value = {
     theme: themes[themeType],
     themeType,
     toggleTheme,
+    getThemeLabel, // <-- context'e ekle
   };
 
   return (

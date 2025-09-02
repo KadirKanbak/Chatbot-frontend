@@ -56,9 +56,9 @@ const HomeScreen: React.FC = () => {
 
   // CHATHISTORYLight tasarımına uyarlanmış görünüm
   const cardBg =
-    themeType === "dark" ? theme.colors.brand.bg : "rgba(255,255,255,0.95)";
+    themeType === "dark" ? theme.colors.brand.bg: "rgba(255,255,255,0.95)";
   return (
-    <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
+    <View style={[styles.screen, { backgroundColor: themeType === "dark" ? theme.colors.background : theme.colors.background }]}>
       <StatusBar
         barStyle={themeType === "dark" ? "light-content" : "dark-content"}
       />
@@ -192,16 +192,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: metrics.padding.large,
     paddingTop:
       Platform.OS === "ios"
-        ? metrics.padding.xlarge * 1.3
-        : metrics.padding.large,
-    paddingBottom: metrics.padding.small,
+        ? metrics.padding.medium * 3 + 2
+        : metrics.padding.medium * 3 + 2,
+    paddingBottom: metrics.padding.medium,
     position: "relative",
     overflow: "hidden",
   },
   headerTitle: {
-    fontSize: normalize(24),
+    fontSize: metrics.fontSize.large,
     fontWeight: "600",
-    letterSpacing: 0.5,
+    flexShrink: 1,
+    minWidth: normalize(80),
+    justifyContent: "center",
   },
   card: {
     flex: 1,

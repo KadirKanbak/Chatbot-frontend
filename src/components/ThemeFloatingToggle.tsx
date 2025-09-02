@@ -41,11 +41,11 @@ const ThemeFloatingToggle: React.FC<{ currentRoute?: string }> = ({
     >
       <MaterialIcons
         name={themeType === "dark" ? "light-mode" : "dark-mode"}
-        size={normalize(18)}
+        size={normalize(22)}
         color={theme.colors.primary}
       />
       <Text style={[styles.text, { color: theme.colors.primary }]}>
-        {themeType === "dark" ? "Light" : "Dark"}
+        {themeType === "dark" ? "Açık" : "Koyu"}
       </Text>
     </TouchableOpacity>
   );
@@ -66,13 +66,16 @@ const styles = StyleSheet.create({
   },
   compact: {
     width: normalize(44),
-    height: normalize(44),
+    height: normalize(50),
     borderRadius: normalize(22),
     justifyContent: "center",
   },
   text: {
     fontSize: normalize(12),
     fontWeight: "600",
+    minWidth: normalize(28),
+    textAlign: "center",
+    marginLeft: normalize(3),
     ...Platform.select({ android: { includeFontPadding: false } }),
   },
 });

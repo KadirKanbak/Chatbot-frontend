@@ -18,7 +18,9 @@ import { metrics, normalize } from "@/utils/metrics";
 import { validateEmail, validatePassword } from "@/utils/validation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/navigation";
+import { LinearGradient } from "expo-linear-gradient";
 
+//ANA KAYIT VE GİRİŞ EKRANI
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -38,7 +40,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({
   route,
   initialMode = "login",
 }) => {
-  const { theme, themeType } = useTheme();
+  const { theme, themeType} = useTheme();
   const [mode, setMode] = useState<AuthMode>(initialMode);
 
   // shared fields
@@ -110,205 +112,172 @@ const AuthScreen: React.FC<AuthScreenProps> = ({
   const fieldBg =
     themeType === "dark" ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.95)";
 
+  const gradientColors = (
+    themeType === "dark"
+      ? ["#0B0C18", "#030852", "#0B0C18"]
+      : ["#D6E4FF", "#F0F5FF", "#D6E4FF"]
+  ) as [string, string, string];
+  
   return (
-    <KeyboardAvoidingView
-      style={s.container}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <View style={[s.header, { backgroundColor: theme.colors.primary }]}>
-        <TouchableOpacity
-          onPress={() => navigation?.goBack()}
-          style={s.backBtn}
-        >
-          <MaterialIcons
-            name="arrow-back"
-            size={normalize(22)}
-            color={theme.colors.text.inverse}
-          />
-        </TouchableOpacity>
-        <Text style={[s.headerTitle, { color: theme.colors.text.inverse }]}>
-          {isSignup ? "Kayıt Ol" : "Giriş Yap"}
-        </Text>
-        <View style={s.headerSpacer} />
-      </View>
-      <ScrollView
-        contentContainerStyle={s.scroll}
-        keyboardShouldPersistTaps="handled"
+    <View style={{ flex: 1, justifyContent: "center" }}>
+      <LinearGradient colors={gradientColors} style={s.gradient} />
+      <KeyboardAvoidingView
+        style={[s.container, { justifyContent: "center" }]}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <View
-          style={[
-            s.card,
-            { backgroundColor: bgCard, borderColor: theme.colors.border },
-          ]}
+        <View style={[s.header, { backgroundColor: theme.colors.brand.bg }]}>
+          <TouchableOpacity
+            onPress={() => navigation?.goBack()}
+            style={s.backBtn}
+          >
+            <MaterialIcons
+              name="arrow-back"
+              size={normalize(22)}
+              color={theme.colors.text.primary}
+            />
+          </TouchableOpacity>
+          <Text style={[s.headerTitle, { color: theme.colors.text.primary }]}>
+            {isSignup ? "Kayıt Ol" : "Giriş Yap"}
+          </Text>
+          <View style={s.headerSpacer} />
+        </View>
+        <ScrollView
+          contentContainerStyle={[s.scroll, { justifyContent: "center", paddingBottom: 100 ,flexGrow: 1 }]} // <-- ortala
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={s.modeTabsWrap}>
-            <TouchableOpacity
-              onPress={() => switchMode("login")}
-              style={[
-                s.modeTab,
-                isSignup
-                  ? null
-                  : [
-                      s.modeTabActive,
-                      { backgroundColor: theme.colors.primary },
-                    ],
-              ]}
-            >
-              <Text
+          <View
+            style={[
+              s.card,
+              { backgroundColor: bgCard, borderColor: theme.colors.border },
+            ]}
+          >
+            <View style={s.modeTabsWrap}>
+              <TouchableOpacity
+                onPress={() => switchMode("login")}
                 style={[
-                  s.modeTabText,
-                  {
-                    color: isSignup
-                      ? theme.colors.text.secondary
-                      : theme.colors.text.inverse,
-                  },
+                  s.modeTab,
+                  isSignup
+                    ? null
+                    : [
+                        s.modeTabActive,
+                        { backgroundColor: theme.colors.primary },
+                      ],
                 ]}
               >
-                Giriş
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => switchMode("signup")}
-              style={[
-                s.modeTab,
-                isSignup
-                  ? [s.modeTabActive, { backgroundColor: theme.colors.primary }]
-                  : null,
-              ]}
-            >
-              <Text
+                <Text
+                  style={[
+                    s.modeTabText,
+                    {
+                      color: isSignup
+                        ? theme.colors.text.secondary
+                        : theme.colors.text.inverse,
+                    },
+                  ]}
+                >
+                  Giriş Yap
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => switchMode("signup")}
                 style={[
-                  s.modeTabText,
-                  {
-                    color: isSignup
-                      ? theme.colors.text.inverse
-                      : theme.colors.text.secondary,
-                  },
+                  s.modeTab,
+                  isSignup
+                    ? [s.modeTabActive, { backgroundColor: theme.colors.primary}]
+                    : null,
                 ]}
               >
-                Kayıt
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={[
+                    s.modeTabText,
+                    {
+                      color: isSignup
+                        ? theme.colors.text.inverse
+                        : theme.colors.text.secondary,
+                    },
+                  ]}
+                >
+                  Kayıt Ol
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-          <Text style={[s.title, { color: theme.colors.primary }]}>
-            {isSignup ? "Yeni bir hesap oluşturun" : "Tekrar hoş geldiniz"}
-          </Text>
-          <Text style={[s.subtitle, { color: theme.colors.text.secondary }]}>
-            {isSignup
-              ? "Finans asistanınızı kullanmaya başlayın"
-              : "Hesabınıza erişin ve devam edin"}
-          </Text>
+            <Text style={[s.title, { color: theme.colors.primary }]}>
+              {isSignup ? "Yeni bir hesap oluşturun" : "Tekrar hoş geldiniz"}
+            </Text>
+            <Text style={[s.subtitle, { color: theme.colors.text.secondary }]}>
+              {isSignup
+                ? "Finans asistanınızı kullanmaya başlayın"
+                : "Hesabınıza erişin ve devam edin"}
+            </Text>
 
-          {isSignup && (
+            {isSignup && (
+              <View style={s.fieldBlock}>
+                <Text style={[s.label, { color: theme.colors.text.secondary }]}>
+                  Ad Soyad
+                </Text>
+                <View
+                  style={[
+                    s.fieldWrapper,
+                    {
+                      backgroundColor: fieldBg,
+                      borderColor: theme.colors.border,
+                    },
+                  ]}
+                >
+                  <MaterialIcons
+                    name="person"
+                    size={18}
+                    color={theme.colors.text.secondary}
+                    style={s.icon}
+                  />
+                  <TextInput
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="Adınız ve Soyadınız"
+                    placeholderTextColor={theme.colors.text.secondary}
+                    style={[s.input, { color: theme.colors.text.primary }]}
+                    autoCapitalize="words"
+                  />
+                </View>
+              </View>
+            )}
+
             <View style={s.fieldBlock}>
               <Text style={[s.label, { color: theme.colors.text.secondary }]}>
-                Ad Soyad
+                E-posta
               </Text>
               <View
                 style={[
                   s.fieldWrapper,
-                  {
-                    backgroundColor: fieldBg,
-                    borderColor: theme.colors.border,
-                  },
+                  { backgroundColor: fieldBg, borderColor: theme.colors.border },
                 ]}
               >
                 <MaterialIcons
-                  name="person"
+                  name="mail"
                   size={18}
                   color={theme.colors.text.secondary}
                   style={s.icon}
                 />
                 <TextInput
-                  value={name}
-                  onChangeText={setName}
-                  placeholder="Adınız ve Soyadınız"
+                  value={email}
+                  onChangeText={setEmail}
+                  placeholder="ornek@eposta.com"
                   placeholderTextColor={theme.colors.text.secondary}
                   style={[s.input, { color: theme.colors.text.primary }]}
-                  autoCapitalize="words"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
                 />
               </View>
             </View>
-          )}
 
-          <View style={s.fieldBlock}>
-            <Text style={[s.label, { color: theme.colors.text.secondary }]}>
-              E-posta
-            </Text>
-            <View
-              style={[
-                s.fieldWrapper,
-                { backgroundColor: fieldBg, borderColor: theme.colors.border },
-              ]}
-            >
-              <MaterialIcons
-                name="mail"
-                size={18}
-                color={theme.colors.text.secondary}
-                style={s.icon}
-              />
-              <TextInput
-                value={email}
-                onChangeText={setEmail}
-                placeholder="ornek@eposta.com"
-                placeholderTextColor={theme.colors.text.secondary}
-                style={[s.input, { color: theme.colors.text.primary }]}
-                autoCapitalize="none"
-                keyboardType="email-address"
-              />
-            </View>
-          </View>
-
-          <View style={s.fieldBlock}>
-            <Text style={[s.label, { color: theme.colors.text.secondary }]}>
-              Şifre
-            </Text>
-            <View
-              style={[
-                s.fieldWrapper,
-                { backgroundColor: fieldBg, borderColor: theme.colors.border },
-              ]}
-            >
-              <MaterialIcons
-                name="lock"
-                size={18}
-                color={theme.colors.text.secondary}
-                style={s.icon}
-              />
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Şifreniz"
-                placeholderTextColor={theme.colors.text.secondary}
-                style={[s.input, { color: theme.colors.text.primary }]}
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword((p) => !p)}
-                style={s.eyeBtn}
-              >
-                <MaterialIcons
-                  name={showPassword ? "visibility-off" : "visibility"}
-                  size={18}
-                  color={theme.colors.text.secondary}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {isSignup && (
             <View style={s.fieldBlock}>
               <Text style={[s.label, { color: theme.colors.text.secondary }]}>
-                Şifre (Tekrar)
+                Şifre
               </Text>
               <View
                 style={[
                   s.fieldWrapper,
-                  {
-                    backgroundColor: fieldBg,
-                    borderColor: theme.colors.border,
-                  },
+                  { backgroundColor: fieldBg, borderColor: theme.colors.border },
                 ]}
               >
                 <MaterialIcons
@@ -318,127 +287,182 @@ const AuthScreen: React.FC<AuthScreenProps> = ({
                   style={s.icon}
                 />
                 <TextInput
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                  placeholder="Şifrenizi tekrar"
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Şifreniz"
                   placeholderTextColor={theme.colors.text.secondary}
                   style={[s.input, { color: theme.colors.text.primary }]}
-                  secureTextEntry={!showConfirmPassword}
+                  secureTextEntry={!showPassword}
                 />
                 <TouchableOpacity
-                  onPress={() => setShowConfirmPassword((p) => !p)}
+                  onPress={() => setShowPassword((p) => !p)}
                   style={s.eyeBtn}
                 >
                   <MaterialIcons
-                    name={showConfirmPassword ? "visibility-off" : "visibility"}
+                    name={showPassword ? "visibility-off" : "visibility"}
                     size={18}
                     color={theme.colors.text.secondary}
                   />
                 </TouchableOpacity>
               </View>
             </View>
-          )}
 
-          {!!error && (
-            <View
-              style={[
-                s.feedbackBox,
-                { backgroundColor: theme.colors.error + "15" },
-              ]}
-            >
-              <MaterialIcons
-                name="error"
-                size={18}
-                color={theme.colors.error}
-              />
-              <Text style={[s.feedbackText, { color: theme.colors.error }]}>
-                {error}
-              </Text>
-            </View>
-          )}
-          {!!success && (
-            <View
-              style={[
-                s.feedbackBox,
-                { backgroundColor: theme.colors.success + "15" },
-              ]}
-            >
-              <MaterialIcons
-                name="check-circle"
-                size={18}
-                color={theme.colors.success}
-              />
-              <Text style={[s.feedbackText, { color: theme.colors.success }]}>
-                {success}
-              </Text>
-            </View>
-          )}
-
-          <TouchableOpacity
-            onPress={handleSubmit}
-            disabled={isLoading}
-            style={[
-              s.submitBtn,
-              { backgroundColor: theme.colors.primary },
-              isLoading && { opacity: 0.7 },
-            ]}
-            activeOpacity={0.9}
-          >
-            {isLoading ? (
-              <View style={s.btnInner}>
-                <ActivityIndicator color={theme.colors.text.inverse} />
-                <Text style={[s.btnText, { color: theme.colors.text.inverse }]}>
-                  İşleniyor...
+            {isSignup && (
+              <View style={s.fieldBlock}>
+                <Text style={[s.label, { color: theme.colors.text.secondary }]}>
+                  Şifre (Tekrar)
                 </Text>
+                <View
+                  style={[
+                    s.fieldWrapper,
+                    {
+                      backgroundColor: fieldBg,
+                      borderColor: theme.colors.border,
+                    },
+                  ]}
+                >
+                  <MaterialIcons
+                    name="lock"
+                    size={18}
+                    color={theme.colors.text.secondary}
+                    style={s.icon}
+                  />
+                  <TextInput
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    placeholder="Şifrenizi tekrar"
+                    placeholderTextColor={theme.colors.text.secondary}
+                    style={[s.input, { color: theme.colors.text.primary }]}
+                    secureTextEntry={!showConfirmPassword}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowConfirmPassword((p) => !p)}
+                    style={s.eyeBtn}
+                  >
+                    <MaterialIcons
+                      name={showConfirmPassword ? "visibility-off" : "visibility"}
+                      size={18}
+                      color={theme.colors.text.secondary}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            ) : (
-              <View style={s.btnInner}>
+            )}
+
+            {!!error && (
+              <View
+                style={[
+                  s.feedbackBox,
+                  { backgroundColor: theme.colors.error + "15" },
+                ]}
+              >
                 <MaterialIcons
-                  name={isSignup ? "person-add" : "login"}
-                  size={20}
-                  color={theme.colors.text.inverse}
+                  name="error"
+                  size={18}
+                  color={theme.colors.error}
                 />
-                <Text style={[s.btnText, { color: theme.colors.text.inverse }]}>
-                  {isSignup ? "Kayıt Ol" : "Giriş Yap"}
+                <Text style={[s.feedbackText, { color: theme.colors.error }]}>
+                  {error}
                 </Text>
               </View>
             )}
-          </TouchableOpacity>
+            {!!success && (
+              <View
+                style={[
+                  s.feedbackBox,
+                  { backgroundColor: theme.colors.success + "15" },
+                ]}
+              >
+                <MaterialIcons
+                  name="check-circle"
+                  size={18}
+                  color={theme.colors.success}
+                />
+                <Text style={[s.feedbackText, { color: theme.colors.success }]}>
+                  {success}
+                </Text>
+              </View>
+            )}
 
-          <TouchableOpacity
-            onPress={() => switchMode(isSignup ? "login" : "signup")}
-            style={s.altLinkWrap}
-          >
-            <Text style={[s.altLinkText, { color: theme.colors.primary }]}>
-              {isSignup
-                ? "Zaten hesabım var, giriş yap"
-                : "Hesabım yok, hesap oluştur"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              disabled={isLoading}
+              style={[
+                s.submitBtn,
+                { backgroundColor: theme.colors.primary },
+                isLoading && { opacity: 0.7 },
+              ]}
+              activeOpacity={0.9}
+            >
+              {isLoading ? (
+                <View style={s.btnInner}>
+                  <ActivityIndicator color={theme.colors.text.inverse} />
+                  <Text style={[s.btnText, { color: theme.colors.text.inverse }]}>
+                    İşleniyor...
+                  </Text>
+                </View>
+              ) : (
+                <View style={s.btnInner}>
+                  <MaterialIcons
+                    name={isSignup ? "person-add" : "login"}
+                    size={20}
+                    color={theme.colors.text.inverse}
+                  />
+                  <Text style={[s.btnText, { color: theme.colors.text.inverse }]}>
+                    {isSignup ? "Kayıt Ol" : "Giriş Yap"}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => switchMode(isSignup ? "login" : "signup")}
+              style={s.altLinkWrap}
+            >
+              <Text style={[s.altLinkText, { color: theme.colors.primary }]}>
+                {isSignup
+                  ? "Zaten hesabım var, giriş yap"
+                  : "Hesabım yok, hesap oluştur"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
 const s = StyleSheet.create({
   container: { flex: 1 },
+  gradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,},
   header: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
     paddingHorizontal: metrics.padding.medium,
     paddingTop:
       Platform.OS === "ios"
-        ? metrics.padding.xlarge * 2
-        : metrics.padding.xlarge,
+        ? metrics.padding.medium * 3-2
+        : metrics.padding.medium * 3-2,
     paddingBottom: metrics.padding.medium,
   },
-  backBtn: { padding: metrics.padding.small },
+  backBtn: { 
+    paddingTop: metrics.padding.small,
+    paddingLeft: metrics.padding.small,
+    paddingRight: metrics.padding.small,
+    paddingBottom: 0,
+    alignSelf: "flex-end" },
   headerTitle: {
     fontSize: metrics.fontSize.large,
     fontWeight: "600",
-    flex: 1,
+    flexShrink: 1,
     textAlign: "center",
+    minWidth: normalize(80),
+    alignSelf: "flex-end",
   },
   headerSpacer: { width: normalize(44) },
   scroll: { flexGrow: 1, padding: metrics.padding.large },
@@ -478,7 +502,7 @@ const s = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  modeTabText: { fontSize: normalize(15), fontWeight: "600" },
+  modeTabText: { fontSize: normalize(15), fontWeight: "600", minWidth: normalize(70), textAlign: "center" },
   title: {
     fontSize: metrics.fontSize.xlarge,
     fontWeight: "700",
@@ -523,8 +547,10 @@ const s = StyleSheet.create({
   submitBtn: {
     borderRadius: metrics.borderRadius.large,
     minHeight: normalize(54),
+    minWidth: normalize(140), // <-- Add this line
     justifyContent: "center",
     marginTop: metrics.padding.small,
+    paddingHorizontal: metrics.padding.large, // <-- Add this line
   },
   btnInner: {
     flexDirection: "row",
@@ -536,9 +562,12 @@ const s = StyleSheet.create({
     fontSize: metrics.fontSize.medium,
     fontWeight: "600",
     marginLeft: metrics.padding.small,
+    flex: 1,
+    minWidth: normalize(280),
+    textAlign: "center",
   },
   altLinkWrap: { marginTop: metrics.padding.medium, alignItems: "center" },
-  altLinkText: { fontSize: metrics.fontSize.small, fontWeight: "600" },
+  altLinkText: { fontSize: metrics.fontSize.small, fontWeight: "600", textAlign: "center", minWidth: normalize(220) },
 });
 
 export default AuthScreen;

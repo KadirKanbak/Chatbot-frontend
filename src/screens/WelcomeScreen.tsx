@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Platform,
   Image,
+  StatusBar,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import ThemedLogo from "@/components/ThemedLogo";
@@ -13,6 +14,7 @@ import { useTheme } from "@/styles/ThemeContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
 import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { metrics, normalize } from "@/utils/metrics";
 
 const styles = StyleSheet.create({
@@ -20,8 +22,16 @@ const styles = StyleSheet.create({
   gradient: { ...StyleSheet.absoluteFillObject },
   scrollArea: {
     flex: 1,
-    paddingHorizontal: metrics.padding.large,
-    paddingTop: metrics.padding.xlarge,
+    justifyContent: "center", // <-- Dikey ortalama
+    paddingTop:
+      Platform.OS === "ios"
+        ? metrics.padding.xlarge
+        : ((StatusBar.currentHeight || metrics.padding.large) + metrics.padding.large),
+    paddingBottom:
+      Platform.OS === "ios"
+        ? metrics.padding.xlarge
+        : metrics.padding.large * 2,
+    paddingHorizontal: metrics.padding.xlarge,
   },
   hero: { alignItems: "center", marginBottom: metrics.padding.xlarge },
   logoWrap: {
@@ -163,8 +173,8 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
 
   const gradientColors = (
     themeType === "dark"
-      ? ["#1F2140", "#121326", "#0B0C18"]
-      : ["#F0F5FF", "#E3ECFF", "#D6E4FF"]
+      ? ["#0B0C18", "#030852", "#0B0C18"]
+      : ["#D6E4FF", "#F0F5FF", "#D6E4FF"]
   ) as [string, string, string];
 
   return (
